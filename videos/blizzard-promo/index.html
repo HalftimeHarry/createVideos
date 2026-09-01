@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1920, height=1080">
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * { box-sizing: border-box; }
+      html, body {
+        margin: 0;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: #040505;
+      }
+      body {
+        font-family: Inter, "Segoe UI", sans-serif;
+        color: #f5f2eb;
+      }
+      #root {
+        position: relative;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background:
+          radial-gradient(circle at 50% 18%, rgba(255,255,255,0.18), transparent 40%),
+          radial-gradient(circle at 50% 90%, rgba(34, 63, 25, 0.4), rgba(0,0,0,0) 50%),
+          linear-gradient(180deg, #020304 0%, #0b0d0f 18%, #07140d 100%);
+      }
+      #root::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background:
+          radial-gradient(circle at 50% 8%, rgba(255,255,255,0.18), rgba(255,255,255,0.00) 16%),
+          radial-gradient(circle at 50% 6%, rgba(96, 112, 75, 0.84) 0%, rgba(101, 112, 83, 0.2) 18%, rgba(0,0,0,0) 35%);
+        opacity: 0.95;
+      }
+      #root::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background:
+          linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.0)),
+          repeating-linear-gradient(
+            90deg,
+            rgba(255,255,255,0) 0,
+            rgba(255,255,255,0) 8%,
+            rgba(255,255,255,0.18) 8.5%,
+            rgba(255,255,255,0.18) 9.4%,
+            rgba(255,255,255,0) 9.8%,
+            rgba(255,255,255,0) 17%
+          );
+        mix-blend-mode: screen;
+        opacity: 0.40;
+      }
+      .clip {
+        position: absolute;
+      }
+      .header {
+        top: 18px;
+        left: 0;
+        width: 100%;
+        height: 120px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 54px 0 56px;
+        border-bottom: 1px solid rgba(210,176,96,0.55);
+        background: rgba(5, 9, 10, 0.68);
+      }
+      .brand-lockup {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+      .brand-logo {
+        width: 64px;
+        height: 64px;
+        object-fit: contain;
+        filter: drop-shadow(0 0 10px rgba(240,196,87,0.4));
+      }
+      .brand-mark {
+        width: 42px;
+        height: 42px;
+        object-fit: contain;
+      }
+      .nav {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+        font-size: 26px;
+        font-weight: 700;
+        color: rgba(245,242,235,0.9);
+        letter-spacing: 0.02em;
+      }
+      .nav a {
+        color: inherit;
+        text-decoration: none;
+      }
+      .cta-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 170px;
+        height: 58px;
+        padding: 0 22px;
+        border-radius: 12px;
+        border: 2px solid #d9ae52;
+        background: #d9ae52;
+        color: #0a120d;
+        font-size: 20px;
+        font-weight: 800;
+        letter-spacing: 0.02em;
+        text-transform: none;
+        box-shadow: 0 0 20px rgba(217,174,82,0.28);
+      }
+      .cta-btn.secondary {
+        background: transparent;
+        color: #f6f0df;
+      }
+      .hero-panel {
+        left: 50%;
+        top: 184px;
+        width: 1500px;
+        height: 470px;
+        transform: translateX(-50%);
+        background: rgba(4, 6, 8, 0.7);
+        border: 1px solid rgba(217,174,82,0.62);
+        border-radius: 22px;
+        box-shadow: 0 30px 60px rgba(0,0,0,0.45), inset 0 0 30px rgba(0,0,0,0.48);
+      }
+      .hero-inner {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        padding: 54px 68px 32px;
+      }
+      .title {
+        position: relative;
+        margin: 0;
+        font-size: 118px;
+        line-height: 0.96;
+        font-weight: 900;
+        letter-spacing: -0.06em;
+        color: #f4efe8;
+      }
+      .title .gold {
+        color: #d9ae52;
+        text-shadow: 0 0 18px rgba(217,174,82,0.3);
+      }
+      .subtitle {
+        margin-top: 30px;
+        font-size: 36px;
+        line-height: 1.35;
+        color: rgba(245,242,235,0.95);
+        max-width: 1060px;
+        font-weight: 400;
+        text-align: center;
+      }
+      .subtitle strong {
+        color: #fdf7ed;
+        font-weight: 700;
+      }
+      .cta-row {
+        display: flex;
+        justify-content: center;
+        gap: 26px;
+        margin-top: 44px;
+      }
+      .stats {
+        left: 50%;
+        bottom: 168px;
+        width: 1500px;
+        height: 150px;
+        transform: translateX(-50%);
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        background: rgba(3, 7, 9, 0.5);
+        border-top: 1px solid rgba(217,174,82,0.62);
+        border-bottom: 1px solid rgba(217,174,82,0.62);
+      }
+      .stat {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        border-right: 1px solid rgba(217,174,82,0.30);
+      }
+      .stat:last-child {
+        border-right: none;
+      }
+      .stat-value {
+        font-size: 56px;
+        font-weight: 800;
+        letter-spacing: -0.06em;
+        color: #f4efe8;
+      }
+      .stat-label {
+        font-size: 28px;
+        color: rgba(245,242,235,0.84);
+      }
+      .gold {
+        color: #d9ae52;
+      }
+      .mascot {
+        left: 50%;
+        bottom: -16px;
+        width: 820px;
+        height: 260px;
+        transform: translateX(-50%);
+        display: flex;
+        justify-content: center;
+      }
+      .mascot img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+        filter: drop-shadow(0 20px 22px rgba(0,0,0,0.5));
+      }
+      .field {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 310px;
+        background: linear-gradient(180deg, rgba(32,64,25,0.9) 0%, rgba(17,43,23,0.98) 100%);
+        border-top: 2px solid rgba(255,255,255,0.2);
+      }
+      .field::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: repeating-linear-gradient(
+          90deg,
+          transparent 0,
+          transparent 112px,
+          rgba(255,255,255,0.78) 113px,
+          rgba(255,255,255,0.78) 122px,
+          transparent 123px,
+          transparent 200px
+        );
+        opacity: 0.6;
+      }
+    </style>
+  </head>
+  <body>
+    <div data-hf-id="hf-199x" id="root" data-composition-id="main" data-start="0" data-duration="10" data-width="1920" data-height="1080">
+      <div data-hf-id="hf-nkv6" class="clip field"></div>
+
+      <div data-hf-id="hf-3pvs" class="clip header" data-start="0" data-duration="10">
+        <div data-hf-id="hf-umee" class="brand-lockup">
+          <img data-hf-id="hf-ehuf" class="brand-logo" src="./logo.png" alt="Blizzard of Odds logo">
+        </div>
+        <nav data-hf-id="hf-il6j" class="nav" aria-label="Main navigation">
+          <a data-hf-id="hf-mjll" href="#">Standings</a>
+          <a data-hf-id="hf-xzkz" href="#">Latest Odds</a>
+          <a data-hf-id="hf-akwv" href="#">Rules</a>
+          <a data-hf-id="hf-9f1n" class="cta-btn" href="#">Register</a>
+          <a data-hf-id="hf-h4s8" class="cta-btn secondary" href="#">Sign In</a>
+        </nav>
+      </div>
+
+      <div data-hf-id="hf-9i9m" class="clip hero-panel" data-start="0" data-duration="10">
+        <div data-hf-id="hf-34ub" class="hero-inner">
+          <h1 data-hf-id="hf-n3g5" class="title">
+            Last Man / Last Woman <span data-hf-id="hf-1fuf" class="gold">Standing</span>
+          </h1>
+          <div data-hf-id="hf-2tf1" class="subtitle">
+            The NFL's most unforgiving survivor pool. <strong data-hf-id="hf-oiyo">Pick a loser every week.</strong> One wrong call and you're out.
+          </div>
+          <div data-hf-id="hf-whmp" class="cta-row">
+            <div data-hf-id="hf-jino" class="cta-btn">Enter the Pool</div>
+            <div data-hf-id="hf-95dn" class="cta-btn secondary">Read the Rules</div>
+          </div>
+        </div>
+      </div>
+
+      <div data-hf-id="hf-k1em" class="clip stats" data-start="0" data-duration="10">
+        <div data-hf-id="hf-xa0m" class="stat">
+          <div data-hf-id="hf-m11n" class="stat-value gold">$100</div>
+          <div data-hf-id="hf-j8c1" class="stat-label">Entry Fee</div>
+        </div>
+        <div data-hf-id="hf-tx7e" class="stat">
+          <div data-hf-id="hf-euv8" class="stat-value">2026 NFL</div>
+          <div data-hf-id="hf-77jm" class="stat-label">Season</div>
+        </div>
+        <div data-hf-id="hf-ubif" class="stat">
+          <div data-hf-id="hf-9eb6" class="stat-value gold">8d 04h 05m</div>
+          <div data-hf-id="hf-968z" class="stat-label">Week 1 pick deadline</div>
+        </div>
+      </div>
+
+      <div data-hf-id="hf-yr6u" class="clip mascot" data-start="0" data-duration="10">
+        <img data-hf-id="hf-v5ce" src="./mascot.png" alt="Blizzard of Odds mascot group">
+      </div>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+
+      tl.from('.header', { opacity: 0, y: -36, duration: 0.7 }, 0)
+        .from('.hero-panel', { opacity: 0, scale: 0.96, y: 35, duration: 1.1 }, 0.2)
+        .from('.title', { opacity: 0, y: 18, duration: 0.9 }, 0.6)
+        .from('.subtitle', { opacity: 0, y: 18, duration: 0.8 }, 1.2)
+        .from('.cta-row .cta-btn', { opacity: 0, y: 18, stagger: 0.16, duration: 0.6 }, 1.6)
+        .from('.stats', { opacity: 0, y: 18, duration: 0.8 }, 2.1)
+        .from('.mascot', { opacity: 0, y: 28, scale: 0.9, duration: 1.0 }, 2.2)
+        .to('.hero-panel', { boxShadow: '0 30px 80px rgba(0,0,0,0.58), inset 0 0 30px rgba(0,0,0,0.48)', duration: 0.7 }, 7.0)
+        .to('.title', { opacity: 1, duration: 0.5 }, 8.5);
+
+      window.__timelines.main = tl;
+    </script>
+  </body>
+</html>
